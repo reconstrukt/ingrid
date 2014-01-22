@@ -488,10 +488,6 @@ jQuery.fn.ingrid = function(o){
 			return this;
 		},
 		
-		getState : function() {
-			// not implemented
-		},
-		
 		saveState : function(data){
 			if (jQuery.cookie) {
 				// save page #, column sort & dir
