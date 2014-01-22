@@ -41,7 +41,8 @@ $(document).ready(
 
 		$('#jump20').click(function(){
 			// the 'g' object is ingrid - call methods like so:
-			mygrid1.g.p.setPage(20)
+			mygrid1.g.p.setPage(20);
+			return false;
 		});
 		
 		$('#sel-rows').click(function(){
@@ -50,8 +51,17 @@ $(document).ready(
 			for (i=0; i<rows.length; i++) {				
 				var str = 'SELECTED ROW ' + i + " - InnerHTML is : \n";
 				alert( str + $(rows[i]).html() );
-			}			
+			}
+			return false;			
 		});
+		
+		$('#save-rows').click(function(){
+			// the 'g' object is ingrid - call methods like so:
+			mygrid1.g.saveSelectedRows();			
+			alert( 'Saved! Refresh, and any selected rows will be auto-highlighted' );
+			return false;
+		});
+		
 		
 	}
 ); 
@@ -336,7 +346,7 @@ $(document).ready(
 </table>	
 
 <br />
-<a href="#" id="jump20">Jump to Page 20</a>  |  <a href="#" id="sel-rows">Get Selected Rows</a>
+<a href="#" id="jump20">Jump to Page 20</a>  |  <a href="#" id="sel-rows">Get Selected Rows</a>  |  <a href="#" id="save-rows">Save Selected Rows</a>
 
 <hr />
 	

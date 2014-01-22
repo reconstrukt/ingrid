@@ -12,7 +12,7 @@
  * @todo load JSON data, etc.
  * 
  * Revision: 0.9.3.0 2009/06/26 Patrice Blanchardie
- * - bug fixes: selection behaviour,
+ * - bug fixes: selection behavior,
  *              hscroll width,
  *              attribute selector,
  *              result error handler,
@@ -92,10 +92,11 @@ jQuery.fn.ingrid = function(o){
 		/* should seldom change */
 		resizeHandleHtml: '',					// resize handle html + css
 		resizeHandleClass: 'grid-col-resize',
-		scrollbarW: 22,							// width allocated for scrollbar
-		columnIDAttr: '_colid',					// attribute name used to groups TDs in columns
-		ingridIDPrefix: '_ingrid',				// prefix used to create unique IDs for Ingrid
-		ingridBaseClass: 'ingrid',				// top-level container class
+		scrollbarW: 22,                         // width allocated for scrollbar
+		columnIDAttr: 'data-ingrid-colid',      // attribute name used to groups TDs in columns
+		rowSelectedAttr: 'data-ingrid-selected', // attribute name for selected rows		
+		ingridIDPrefix: '_ingrid',              // prefix used to create unique IDs for Ingrid
+		ingridBaseClass: 'ingrid',              // top-level container class
 		
 		/* cookie, for saving state */
 		cookieExpiresDays: 360,
@@ -428,11 +429,6 @@ jQuery.fn.ingrid = function(o){
 		load : function(params, cb) {
 			var data = jQuery.extend(cfg.extraParams, params);
 			
-			/*
-			alert(this + ' ...is jQuery')
-			alert(this[0] + ' ...is the div, id="' + this.attr('id') + '"')
-			*/
-			
 			// show loading canvas
 			modalmask.width(b.width()).show();
 			
@@ -461,7 +457,7 @@ jQuery.fn.ingrid = function(o){
 						if ( jQuery(row).find('td').length == cfg.colWidths.length ) {
 							// setting width on first row keeps it from "blinking"
 							jQuery(row).find('td').each(function(i){
-								// don't use width() - makes column headers jitter																									 
+								// don't use width(), makes column headers jitter
 								// g.getHeader(i).width()
 								jQuery(this).width( g.getHeader(i).css('width') )								
 							});
@@ -492,62 +488,21 @@ jQuery.fn.ingrid = function(o){
 			return this;
 		},
 		
-		// returns JSON
 		getState : function() {
-			
-			/*
-			alert(this + ' ...is jQuery')
-			alert(this[0] + ' ...is the div, id="' + this.attr('id') + '"')
-			*/
-			var props = {
-				url : 'nothing'				
-			}
-			return props;
+			// not implemented
 		},
 		
 		saveState : function(data){
-
-			// how can we deserialize the 'data' object from JSON, to a string, like: "{page:3}"
-			//   we could then save this JSON string into a cookie, 
-			//   and eval() it back out again when initStylesAndWidths() is called
-			
-			/*
-			I think I need the JSON lib?
-			JSON.toString(json_object)
-			
-			so, like
-			JSON.toString(props)
-			
-			would be nice to combine JSON & jQuery's cookie plugin, call it something like "cache"
-			which would let you serialize JSON objects as strings, for storage in cookies, and eval() them back out from a cookie later
-			
-			so you could call like: 
-			
-				jQuery.toCache(json_object, 'key')
-				json_object = eval( jQuery.fromCache('key') );
-				jQuery.clearCache('key')
-				
-			...u could get creative and call it "save", "remember", "recall", "read", "store", "forget" or whatever
-			*/
-			
 			if (jQuery.cookie) {
 				// save page #, column sort & dir
-				var g_id  		= this.attr('id');
+				var g_id = this.attr('id');
 				var param_str = 'page=' + data.page + ',sort=' + data.sort + ',dir=' + data.dir;
 				jQuery.cookie(g_id, param_str, {expires: cfg.cookieExpiresDays, path: cfg.cookiePath});
 			}
-			
-			/*
-			props.url = data;
-			alert( data.toString() );
-			alert( props.toString() );
-			*/
-			
 		},
 		
 		saveSelectedRows : function() {
 			if (jQuery.cookie) {
-				//var row_ids		= g.getSelectedRowIds();
 				var row_ids = g.selected_ids;
 				jQuery.cookie( this.attr('id') + '_rows', row_ids.join(','), {expires: cfg.cookieExpiresDays, path: cfg.cookiePath});				
 			}
@@ -605,27 +560,27 @@ jQuery.fn.ingrid = function(o){
 				
 		// returns <tr> els
 		getSelectedRows : function() {
-			return this.find("tbody tr[_selected='true']");
+			return this.find("tbody tr[" + cfg.rowSelectedAttr + "='true']");
 		},
 		
 		unSelectAll : function() {
 			g.getSelectedRows().each(function() {
-				$(this).attr("_selected", "true");
+				$(this).attr(cfg.rowSelectedAttr, "true");
 				$(this).click();
 			});
 		},
 		
 		selectAll : function() {
 			this.find("tbody tr").each(function() {
-				$(this).attr("_selected", "false");
+				$(this).attr(cfg.rowSelectedAttr, "false");
 				$(this).click();
 			});
 		},
 		
 		// returns an array of IDs (current view)
 		getSelectedRowIds : function() {
-			var rows 			= g.getSelectedRows();
-			var row_ids		= [];
+			var rows = g.getSelectedRows();
+			var row_ids	= [];
 			for (i=0; i<rows.length; i++) {
 				if ( jQuery(rows[i]).attr('id') ) row_ids.push( jQuery(rows[i]).attr('id') );
 			}
@@ -658,8 +613,6 @@ jQuery.fn.ingrid = function(o){
 		
 		initStylesAndWidths : function() {
 			
-			// alert('setting styles and widths')
-			
 			var colWidths = new Array();
 			this.getHeaders().each(function(i){
 				// don't use width() - makes column headers jitter
@@ -669,9 +622,6 @@ jQuery.fn.ingrid = function(o){
 
 			// make one pass of the grid, 
 			// initialize properties on rows & columns
-			
-			// old way to store ids
-			//var str_ids = '|' + g.getSavedRowIds().join('|') + '|';
 			
 			// pre-selected rows
 			g.selected_ids = g.getSavedRowIds();
@@ -689,16 +639,18 @@ jQuery.fn.ingrid = function(o){
 						// hover class
 						jQuery(this).hover(
 							function() { 
-								if (jQuery(this).attr('_selected') != 'true') jQuery(this).removeClass(cfg.rowClasses[cursor]).addClass(cfg.rowHoverClass); 
+								if (jQuery(this).attr(cfg.rowSelectedAttr) != 'true') 
+									jQuery(this).removeClass(cfg.rowClasses[cursor]).addClass(cfg.rowHoverClass); 
 							},
 							function() { 
-								if (jQuery(this).attr('_selected') != 'true') jQuery(this).removeClass(cfg.rowHoverClass).addClass(cfg.rowClasses[cursor]); 
+								if (jQuery(this).attr(cfg.rowSelectedAttr) != 'true') 
+									jQuery(this).removeClass(cfg.rowHoverClass).addClass(cfg.rowClasses[cursor]);
 							}
 						);
 					}
 				}
 				
-				// setup column IDs & classes on row's cells
+				// setup column IDs & classes on rows' cells
 				jQuery(this).find('td').each(function(i){
 					// column IDs & width
 					// wrap the cell text in a div with overflow hidden, so cells aren't stretched wider by long text
@@ -714,21 +666,21 @@ jQuery.fn.ingrid = function(o){
 					}
 				});
 				
-				// selection behaviour
+				// selection behavior
 				if (cfg.rowSelection == true) {
 					jQuery(this).click(function() {
 						// test array state
 						isAlreadySelected = jQuery(this).attr('id') != undefined && jQuery.inArray(jQuery(this).attr('id'), g.selected_ids) != -1;
 						// test view state
-						if (jQuery(this).attr('_selected') && jQuery(this).attr('_selected') == 'true') {
+						if (jQuery(this).attr( cfg.rowSelectedAttr ) && jQuery(this).attr( cfg.rowSelectedAttr ) == 'true') {
 							// switch to unselected state
-							jQuery(this).attr('_selected', 'false').removeClass(cfg.rowSelectedClass);
+							jQuery(this).attr(cfg.rowSelectedAttr, 'false').removeClass(cfg.rowSelectedClass);
 							// remove from selected_ids array
-							if(isAlreadySelected)
+							if (isAlreadySelected)
 								g.selected_ids.splice(jQuery.inArray(jQuery(this).attr('id'), g.selected_ids),1);
 						} else {
 							// switch to selected state
-							jQuery(this).attr('_selected', 'true').addClass(cfg.rowSelectedClass);
+							jQuery(this).attr(cfg.rowSelectedAttr, 'true').addClass(cfg.rowSelectedClass);
 							// push to selected_ids array
 							if(!isAlreadySelected)
 								g.selected_ids.push(jQuery(this).attr('id'));
@@ -736,17 +688,15 @@ jQuery.fn.ingrid = function(o){
 						
 						// callback
 						if (cfg.onRowSelect)
-							cfg.onRowSelect(this, (jQuery(this).attr('_selected') == 'true') );
+							cfg.onRowSelect( this, (jQuery(this).attr( cfg.rowSelectedAttr ) == 'true') );
 					});
 					
-					// previously selected rows
-					// (use table instead of str)
-					//if (jQuery(this).attr('id') && str_ids.indexOf( '|' + jQuery(this).attr('id') + '|' ) != -1) {
+					// hilite previously selected rows
 					if (jQuery(this).attr('id')!=undefined && jQuery.inArray(jQuery(this).attr('id'), g.selected_ids) != -1) {
 						// switch to selected state
-						jQuery(this).attr('_selected', 'true').addClass(cfg.rowSelectedClass);
+						jQuery(this).attr(cfg.rowSelectedAttr, 'true').addClass(cfg.rowSelectedClass);
 						// push to selected_ids array
-						if(jQuery(this).attr('id') == undefined || jQuery.inArray(jQuery(this).attr('id'), g.selected_ids) == -1)
+						if (jQuery(this).attr('id') == undefined || jQuery.inArray(jQuery(this).attr('id'), g.selected_ids) == -1)
 							g.selected_ids.push(jQuery(this).attr('id'));
 						// callback
 						if (cfg.onRowSelect)
@@ -756,7 +706,6 @@ jQuery.fn.ingrid = function(o){
 			});
 		}			
 	});
-	
 	
 	/*
 	console.log(this + ' ...is jQuery')
@@ -812,12 +761,12 @@ jQuery.fn.ingrid = function(o){
 					params.page = hash['page'];
 					p.find('input.' + cfg.pageInputClass).val(params.page);
 				}
-				if (hash['sort'].toLowerCase() != 'undefined' && 
-						hash['dir'].toLowerCase() != 'undefined') {
+				if (hash['sort'].toLowerCase() != 'undefined' && hash['dir'].toLowerCase() != 'undefined') {
 					
 					params.sort = hash['sort'];
 					params.dir 	= hash['dir'];
 					var colid = params.sort;
+					
 					// perhaps the sort param is a key, if so, get the id for that key
 					if (cfg.colSortParams.length > 0) {
 						for (i=0; i<cfg.colSortParams; i++) {
