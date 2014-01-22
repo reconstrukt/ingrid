@@ -3,29 +3,6 @@
  *
  * Copyright (c) 2009 Matthew Knight (http://reconstrukt.com)
  *                    Patrice Blanchardie (http://www.inisos.fr)
- * 
- * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) 
- * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
- *
- * @requires jQuery v1.2+
- * @version 0.9.3
- * @todo load JSON data, etc.
- * 
- * Revision: 0.9.3.0 2009/06/26 Patrice Blanchardie
- * - bug fixes: selection behavior,
- *              hscroll width,
- *              attribute selector,
- *              result error handler,
- *              header auto-resize
- * - feature: new param: unsortable columns
- * 
- * Revision: 0.9.3.1 2009/06/29 Patrice Blanchardie
- * - bug fixes: unable to clear last selected row from cookie
- *              added onRowSelect callback during pre-selection
- * - feature: new functions : (un)select all
- *            selection is now stored for all pages!
- *            page changed callback
- *
  */
 
 jQuery.fn.ingrid = function(o){
