@@ -433,7 +433,7 @@ jQuery.fn.ingrid = function(o){
 			modalmask.width(b.width()).show();
 			
 			// save selected rows
-			g.saveSelectedRows();
+			if (cfg.rowSelection == true) g.saveSelectedRows();
 			
 			jQuery.ajax({
 				type: cfg.type.toUpperCase(),
