@@ -1,9 +1,5 @@
-ingrid
+modernGrid
 ======
 
-Ingrid, the jquery Datagrid.
-
-Datagrids don't have to be difficult to use anymore - say hi to Ingrid. Ingrid is an unobtrusive jQuery component that adds datagrid behaviors like column resizing, paging, sorting, row and column styling (and more) to your tables. 
-
-View Ingrid in action here: http://reconstrukt.com/ingrid
+This is a complete re-write of ingrid, adding in lots of new functionality.  This is a robust re-write, with initial work completed in 2008, and continually used/maintained ever since.
 
