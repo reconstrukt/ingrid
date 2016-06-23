@@ -9,3 +9,4 @@ modernGrid
 
 Modern Grid has been used in high volume production sites for over seven years - it is continually tweaked to ensure compatability with the lastest version of jQuery, and the latest frameworks.
 
+To see Modern Grid in action, please check out <a href="http://swardmedia.com/modernGrid">Modern Grid</a>
