@@ -1,0 +1,247 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	    <script type="text/javascript" src="jQuery/jquery-3.0.0.js"></script>
+	    <script type="text/javascript" src="js/modernGrid.js"></script>
+	   	<script type="text/javascript" src="js/jquery.jeditable.js"></script>
+	   	<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+	   	<script type="text/javascript" src="bootstrap/js/bootbox.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/modernGrid.css" />
+		<link rel="stylesheet" type="text/css" href="css/icons.css" />
+		<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+		<style type="text/css">
+			#main {
+				width: 1000px;
+				margin-left: 50px;
+				margin-top: 80px;
+			}
+			pre{
+
+				border: solid 1px blue;
+				font-size: 0.9em; 
+			 	color: #000; 
+				margin-left: 30px; 
+				padding:10px; 
+				background: #eee;
+				display: block;
+
+			}
+			.footer {
+				text-align: center;
+				border-top: 1px #000 solid;
+				margin-top: 20px;
+				font-size: 0.9em;
+			}
+			.error, .success {
+				display: none;
+				width: 60%;
+				z-index: 10000;
+				left: 100px;
+				top: 10px;
+				position: fixed;
+			}
+		</style>
+	</head>
+
+	<body>
+		<nav class="navbar navbar-inverse">
+	        <div class="container">
+	          <div class="navbar-header">
+	            <button data-target=".navbar-collapse" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
+	              <span class="sr-only">Toggle navigation</span>
+	              <span class="icon-bar"></span>
+	              <span class="icon-bar"></span>
+	              <span class="icon-bar"></span>
+	            </button>
+	            <a href="#" class="navbar-brand">Modern Grid</a>
+	          </div>
+	          <div class="navbar-collapse collapse">
+	            <ul class="nav navbar-nav">
+	              <li><a href="index.html">Home</a></li>
+	              <li><a href="basic.html">Basic Usage</a></li>
+	              <li><a href="ajax.html">Ajax Source</a></li>
+	              <li><a href="interactiveAjax.html">Interactive</a></li>
+	              <li><a href="moreOptions.html">Options</a></li>
+	              <li><a href="fullExample.html">Full Options</a></li>
+	              <li><a href="rightClick.html">Custom Right Click</a></li>
+	              <li class="active"><a href="optionList.html">Option List</a></li>
+	            </ul>
+	          </div><!--/.nav-collapse -->
+	        </div>
+	      </nav>
+		<div class="error alert alert-danger"></div>
+		<div class="success alert alert-success"></div>
+		<div id="main">
+			<h3>Modern Full Options</h3>
+			<div>
+				<p> By default, Modern Grid returns a jQuery object - by assigning a variable to the return, you can access the following:
+				</p>
+				<p>
+<pre>
+  HTML BLOCKS: 
+
+    infoBarTLeft
+    infoBarTCenter
+    infoBarTRight
+    infoBarBLeft
+    infoBarBCenter
+    infoBarBRight
+  
+  FUNCTIONS:
+
+    clearSelected
+    getSelectedRows
+    updatePaging
+    closeRightClickMenu
+    refresh
+    reload
+</pre>
+				</p>
+				<p>
+					Below find the list of options available for Moder Grid.
+				</p>
+				<p>
+<pre>
+    /*  Basic Table Config */
+    tableType : 'static',                           // type of table - static, hybrid, or dynamic
+    initialLoad : false,                            // when modernGrid is initialized, should it load data immediately?
+    width: 0,                                       // width of div containing table
+    colWidths: [],                                  // array of column widths eg [120, 120, 100, 100]
+    minColWidth: 20,                                // minimum column width Column width will not go below this number
+    target: null,                                   // the div that will hold the finished product
+    tableNetWidth: 0,                               // table net width (width - scrollbar width)
+    minHeight: 100,                                 // minimum height of table
+    footer: false,                                  // show footer
+	headerHeight: 18,
+
+    /* Main Table Classes */
+    headerBgClass: 'grid-header-bg',                // header background class
+    footerBgClass: 'grid-footer-bg',                // footer background class
+    bodyTableDivClass: 'grid-bodyDiv',              // main div to hold the body table (to allow horizontal scrolling of whole table
+    bodyTableClass: 'grid-body',                    // body table class
+    headerTableClass: 'grid-header',                // header table class
+    footerTableClass: 'grid-footer',                // footer table class
+    colClasses: [],                                 // array of classes for columns : i.e. ['','col-2','','']
+    rowClasses: ['grid-odd', 'grid-even'],          // array of classes for rows
+    rowHoverClass: 'grid-row-hover',                // hovering over a row? use this class
+    rowSelectedClass: 'grid-row-selected',          // row selected?  use this class
+    headerSelectedClass: 'grid-header-selected',    // header selected class
+
+    /* Column Alignment */
+    colAlignments: {},                              // array for column alignment : ie ['left', 'left', 'right', 'left']
+    defaultColAlign: 'left',                        // default column alignment - used if col alignment array isn't defined
+    bodyTdDivRightClass: 'grid-bodyData-right',     // data alignment class - right alignment
+    bodyTdDivLeftClass: 'grid-bodyData-left',       // data alignment class - left alignment
+    bodyTdDivCenterClass: 'grid-bodyData-center',   // data alignment class - center alignment
+
+    /* Information Bar Classes */
+    infoBarTClass: 'grid-infoBar-T',                // info bar top class
+    infoBarBClass: 'grid-infoBar-B',                // info bar bottom class
+    TLClass: 'grid-infoBar-tl',                     // info bar top left class
+    TCClass: 'grid-infoBar-tc',                     // info bar top center class
+    TRClass: 'grid-infoBar-tr',                     // info bar top right class
+    BLClass: 'grid-infoBar-bl',                     // info bar bottom left class
+    BCClass: 'grid-infoBar-bc',                     // info bar bottom center class
+    BRClass: 'grid-infoBar-br',                     // info bar bottom right class
+
+    /* Row checkboxes */
+    rowCheckBoxes: false,                           // display row checkboxes?
+    checkedClass: 'grid-checked',                   // row checked class
+    checkBoxClass: 'grid-checkBoxes',               // row unchecked class
+
+    /* Search box config */
+    search: { show: false, position: 'tr'},         // show search?  if yes, position (Top Left - tl, top right - tr, etc)
+    searchClass: 'grid-search',                     // search box class
+    go: { divClass: 'grid-go', text: 'Go'},            // "Go" / search button class
+    searchTerm: 'Search',                           // search box initial text
+
+    /* Row Selection */
+    rowSelection: false,                            // allow row selection?
+    onRowSelect: function(tr, selected){},          // function to call when row is clicked
+    multipleRowSelect: function(rows, selected){},	// function to call when row multiple row selected
+    selectedRowCount: 0,                            // used for sending data from table
+    getSelectedColumns: 0,                          // number of columns of data to pass back
+    previousRow: null,                              // previously selected row?  For shift select
+    selectStyle: "single",                          // Determines how row selection works - single, multiple (Shift/CTRL keys)
+    rightClick: "false",                            // Enable custom right click menu
+    rightClickItems: [],                            // array of items to add to menu
+    rightClickItemClasses: [],                      // array of classes to use for menu items
+    rightClickMenuClass: 'rightClickMenu',          // default class for right click menu
+    rightClickHeaderClass: 'rightClickHeader',      // default class for right click header
+    menuHeader: 'Actions',                          // text for right click menu header
+
+    /* Error Config */
+    error: "There was an error in getting data.",   // standard error message to display on no data
+    errorClass: "grid-error",                       // error class
+	hideTableOnError: false,						// if there is an error getting data, hide the container
+
+    /* Sorting Config */
+    sorting: false,                                 // make table sortable?
+    sortAscParam: 'asc',                            // param passed on ascending sort (i.e. '&dir=asc)
+    sortDescParam: 'desc',                          // param passed on ascending sort (i.e. '&dir=desc)
+    sortedColDir: 'asc',                           // current data's sorted directions
+    sortDefaultDir: 'asc',                         // on 1st click, sort this direction
+    sortAscClass: 'grid-sort-asc',                  // class for ascending sorted col
+    sortDescClass: 'grid-sort-desc',                // class for descending sorted col
+    sortNoneClass: 'grid-sort-none',                // ... not sorted? use this class
+    resizableCols: false,                           // make columns resizable via drag + drop
+    inlineSortingArray: null,                       // for inline sorting of page
+    defaultCol: 'col',                              // attribute name used to groups TDs in columns
+    defaultSortColClass: '',                        // class of intial sorted col (optional)
+
+    /* Paging Config */
+    paging: { show: false, position: 'bl'},         // create a paging toolbar
+    rowCount: { show: false, position: 'br'},       // show row count?
+    pageNumber: 1,                                  // page number (starting, advances with each page returned)
+    recordsPerPage:  0,                             //  # of records per page to calculate # pages from total records
+    totalRecords: null,                             // total records found 
+    pageToolbarHeight: 25,                          // height of the paging toolbar
+    pageStartClass: 'grid-page-start icon-fast-backward-1',              // class for paging starting page (1)
+    pagePrevClass: 'grid-page-prev icon-backward',                // class for previous page
+    pageInfoClass: 'grid-page-info',                // class for information
+    pageInputClass: 'grid-page-input',              // class for input box
+    searchInfoClass: 'grid-search-info',            // class for information
+    searchInputClass: 'grid-search-input',          // class for input box
+    pageNextClass: 'grid-page-next icon-forward-1',                // class for next button
+    pageEndClass: 'grid-page-end icon-step-forward',                  // class for last page
+    pageLoadingClass: 'grid-page-loading',          // class for loading page
+    loadingDoneClass: 'grid-page-loading-done icon-ok-circled2',     // class for finished page loading
+    pageRecordsInfo: 'grid-page-records-info',      // class for records info
+    pagingDivClass: 'grid-paging',                  // paging class
+    rowCountWidth: 175,                             // minimum width of row count
+
+    /* Ajax Config */
+    url: 'remote.html',                             // url to fetch data
+    type: 'GET',                                    // 'POST' or 'GET'
+    dataType: 'html',                               // 'html' or 'json' - expected dataType returned
+    extraParams: {},                                // a map of extra params to send to the server
+    loadingClass: 'grid-loading',                   // loading loading mask div
+    loadingHtml: '&lt;div&gt;&nbsp;&lt;/div&gt;',               // default html for loading mask
+
+    /* should seldom change */
+    resizeHandleHtml: '',                           // resize handle html + css
+    resizeHandleClass: 'grid-col-resize',           // resize handle class
+    scrollbarW: 17,                                 // width allocated for scrollbar
+
+    /* cookie, for saving state */                  // not used yet
+    cookieExpiresDays: 360,                         // cookie expiry date
+    cookiePath: '/',                                // cookie path
+    cookie: false,                                  // save state of modernGrid?
+
+    /* not yet implemented */
+    resizableGrid: false,                           // resizable grid?
+    dragDropCols: false,                            // drag/drop cols?
+    sortType: 'server|client|none'                  // sort server side, client side, or none
+</pre>				
+				</p>
+			</div>
+			<p>
+				<a href="index.html">Home</a> <a href="basic.html">Modern Grid Basics</a> <a href="ajax.html">Modern Grid Ajax</a> <a href="interactiveAjax.html">Modern Grid Interactive</a> <a href="moreOptions.html">Modern Grid Options</a> <a href="fullExample.html">Modern Grid Full Options</a> <a href="rightClick.html">Custom Right Click Menu</a> <a href="optionList.html">Option List</a>
+			</p>
+			<div class="footer">
+				Modern Grid - a jQuery data grid.
+			</div>
+		</div>
+	</body>
+</html>

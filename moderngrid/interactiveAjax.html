@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	    <script type="text/javascript" src="jQuery/jquery-3.0.0.js"></script>
+	    <script type="text/javascript" src="js/modernGrid.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/modernGrid.css" />
+		<link rel="stylesheet" type="text/css" href="css/icons.css" />
+		<style type="text/css">
+			#main {
+				width: 1000px;
+			}
+			pre{
+
+				border: solid 1px blue;
+				font-size: 0.9em; 
+			 	color: #000; 
+				margin-left: 30px; 
+				padding:10px; 
+				background: #eee;
+				display: block;
+
+			}
+			.footer {
+				text-align: center;
+				border-top: 1px #000 solid;
+				margin-top: 20px;
+				font-size: 0.9em;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="main">
+			<h3>Modern Grid Ajax Example 2</h3>
+			<div>
+				<p>
+					In this example, we are pulling data in from an ajax call, and are making the data interactive.  Below is an example of interactive data.
+				</p>
+		
+			<p>
+				We are passing more options into Modern Grid this time around - the first example we'll use is sorting.  We also need to specify a class on each column in order to specify what is being sorted.  This can be done two ways - on the ajax page itself (inline), or by passing in an array of column classes in the options.  This example shows inline column classes.
+<pre>
+&lt;div class="mainTable"&gt;
+&lt;/div&gt;
+
+&lt;script type="text/javascript"&gt;
+$(function() {
+  var options = {
+    url: "ajaxExamples/basic.html",
+    tableType: "dynamic",
+    sorting: true,
+    sortDefaultDir: 'asc',
+  };
+
+  $.modernGrid(".mainTable", options);
+&lt;/script&gt;
+</pre>
+
+				Example ajax page - PHP/MySQL (adding in database to give us something to search/sort on):
+<pre>
+&lt;?php
+
+require_once('../../dbConfig.php'); // this file is used to access the database - you will have to set up your own connection
+
+
+// GET required variables from request
+
+$direction = $_REQUEST['order_dir'];
+$currentPage = $_REQUEST['current_page'];
+$recordsPerPage = $_REQUEST['records_per_page'];
+$orderBy = $_REQUEST['order_by'];
+
+if ($recordsPerPage == '') {
+	$recordsPerPage = 10; // give a minimum amount, otherwise no results will be shown
+}
+
+if (is_array($orderBy)) {
+	$orderBy = implode(',', $orderBy);
+}
+
+if ($orderBy == '') {
+	$orderBy = 'id'; // initial column to order by, in this case, id
+}
+
+if ($direction == '') {
+	$direction = 'asc';
+}
+
+$offset = ($recordsPerPage * $currentPage) - $recordsPerPage; // calculate the offset
+
+$sql = "SELECT * FROM joe_modernGrid.numbers n";
+
+if ($searchTerm != '') {
+
+		$sql .= ' WHERE n.item LIKE "%'.$searchTerm.'%"';
+
+	}
+
+	$sql .= " ORDER BY ".$orderBy." ".$direction;
+	$sql .= " LIMIT ".$offset.','.$recordsPerPage;
+
+	$result = $conn-&gt;query($sql);
+	if($result === false) {
+		trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn-&gt;error, E_USER_ERROR);		
+	} else {
+		while ($row = $result-&gt;fetch_assoc()) {
+			$data[] = $row;
+		}
+	}
+
+// get columns to create Column names and classes for sorting
+$columns = array_keys($data[0]);
+
+?&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+		&lt;tr&gt;
+		&lt;?php foreach($columns as $colName) { ?&gt;
+			&lt;th class="&lt;?= $colName; ?&gt;"&gt;&lt;?= ucfirst(parseCamelCase($colName)); ?&gt;&lt;/th&gt;
+		&lt;?php } ?&gt;
+		&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+		&lt;?php foreach($data as $key=&gt;$value) { ?&gt;
+			&lt;tr&gt;
+				&lt;?php foreach($value as $details) { ?&gt;
+					&lt;td&gt;&lt;?= $details; ?&gt;&lt;/td&gt;
+				&lt;?php } ?&gt;
+			&lt;/tr&gt;
+		&lt;?php } ?&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;?php 
+
+function parseCamelCase($str)
+{
+    return preg_replace('/(?!^)[A-Z]{2,}(?=[A-Z][a-z])|[A-Z][a-z]|[0-9]{1,}/', ' $0', $str); 
+}
+
+?&gt;
+</pre>
+				You can now sort by column: 
+			</p>
+
+			<div class="mainTable">
+			</div>
+			<br>
+			<div class="secondTable">
+			</div>
+		</div>
+		<p>
+			<a href="index.html">Home</a> <a href="basic.html">Modern Grid Basics</a> <a href="ajax.html">Modern Grid Ajax</a> <a href="interactiveAjax.html">Modern Grid Interactive</a> <a href="moreOptions.html">Modern Grid Options</a> <a href="fullExample.html">Modern Grid Full Options</a> <a href="rightClick.html">Custom Right Click Menu</a> <a href="optionList.html">Option List</a>
+		</p>
+		<div class="footer">
+			Modern Grid - a jQuery data grid.
+		</div>
+		<script type="text/javascript">
+			$(function() {
+				var options = {
+				      url: "ajaxExamples/sortInlineClasses.php",
+				      tableType: "dynamic",
+					  sorting: true,
+					  sortDefaultDir: 'asc',
+					  recordsPerPage: 10,
+				      };
+
+			   $.modernGrid(".mainTable", options);
+
+			});
+
+		</script>
+
+	</body>
+</html>

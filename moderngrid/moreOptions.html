@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	    <script type="text/javascript" src="jQuery/jquery-3.0.0.js"></script>
+	    <script type="text/javascript" src="js/modernGrid.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/modernGrid.css" />
+		<link rel="stylesheet" type="text/css" href="css/icons.css" />
+		<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+		<style type="text/css">
+			#main {
+				width: 1000px;
+				margin-left: 50px;
+			}
+			pre{
+
+				border: solid 1px blue;
+				font-size: 0.9em; 
+			 	color: #000; 
+				margin-left: 30px; 
+				padding:10px; 
+				background: #eee;
+				display: block;
+
+			}
+			.footer {
+				text-align: center;
+				border-top: 1px #000 solid;
+				margin-top: 20px;
+				font-size: 0.9em;
+			}
+		</style>
+	</head>
+
+	<body>
+		<nav class="navbar navbar-inverse">
+	        <div class="container">
+	          <div class="navbar-header">
+	            <button data-target=".navbar-collapse" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
+	              <span class="sr-only">Toggle navigation</span>
+	              <span class="icon-bar"></span>
+	              <span class="icon-bar"></span>
+	              <span class="icon-bar"></span>
+	            </button>
+	            <a href="#" class="navbar-brand">Modern Grid</a>
+	          </div>
+	          <div class="navbar-collapse collapse">
+	            <ul class="nav navbar-nav">
+	              <li><a href="index.html">Home</a></li>
+	              <li><a href="basic.html">Basic Usage</a></li>
+	              <li><a href="ajax.html">Ajax Source</a></li>
+	              <li><a href="interactiveAjax.html">Interactive</a></li>
+	              <li class="active"><a href="moreOptions.html">Options</a></li>
+	              <li><a href="fullExample.html">Full Options</a></li>
+	              <li><a href="rightClick.html">Custom Right Click</a></li>
+	              <li><a href="optionList.html">Option List</a></li>
+	            </ul>
+	          </div><!--/.nav-collapse -->
+	        </div>
+	      </nav>
+		<div id="main">
+			<h3>Modern Grid Ajax Example - 3</h3>
+			<div>
+				<p>
+					Below are a few different examples of interactive data.  I've added in Bootstrap to show how Modern Grid works with a modern front end framework.
+				</p>
+		
+			<p>
+				We are now sorting, and adding in a search as well.  Both tables are now shown together (you can have multiple modernGrids per page). Note the additional options.
+<pre>
+&lt;div class="mainTable"&gt;
+&lt;/div&gt;
+
+&lt;script type="text/javascript"&gt;
+$(function() {
+  var options = {
+    url: "ajaxExamples/sortInlineClasses.php",
+    tableType: "dynamic",
+    sorting: true,
+    sortDefaultDir: 'asc',
+    recordsPerPage: 2,
+    pageNumber: 1, 
+    infoBarBottom: true,
+    infoBarTop: true,
+    paging: { show: true, position: "bl"}, 
+    search: { show: true, position:"tr"},
+    pageToolbarHeight: 35,
+    defaultSortColClass: "id",
+    rowCount: { show: true, position: 'br'},
+    totalRecords: 6,
+  };
+
+  $.modernGrid(".mainTable", options);
+&lt;/script&gt;
+</pre>
+
+				Original ajax call:
+			</p>
+
+			<div class="mainTable">
+			</div>
+			<br>
+			Second table with more options: - we've added in information bars top and bottom, with pagination and a search box.  Note that both tables are pulling from the same page!
+			<div class="secondTable">
+			</div>
+		</div>
+		<p>
+			<a href="index.html">Home</a> <a href="basic.html">Modern Grid Basics</a> <a href="ajax.html">Modern Grid Ajax</a> <a href="interactiveAjax.html">Modern Grid Interactive</a> <a href="moreOptions.html">Modern Grid Options</a> <a href="fullExample.html">Modern Grid Full Options</a> <a href="rightClick.html">Custom Right Click Menu</a> <a href="optionList.html">Option List</a>
+		</p>
+		<div class="footer">
+			Modern Grid - a jQuery data grid.
+		</div>
+		<script type="text/javascript">
+			$(function() {
+				var options = {
+				      url: "ajaxExamples/sortInlineClasses.php",
+				      tableType: "dynamic",
+					  sorting: true,
+					  sortDefaultDir: 'asc',
+					  recordsPerPage: 10,
+				      };
+
+			   $.modernGrid(".mainTable", options);
+
+				var secondOptions = {
+				      url: "ajaxExamples/sortInlineClasses.php",
+				      tableType: "dynamic",
+					  sorting: true,
+					  sortDefaultDir: 'asc',
+					  recordsPerPage: 2,
+				      pageNumber: 1, 
+				      infoBarBottom: true,
+				      infoBarTop: true,
+      				  paging: { show: true, position: "bl"}, 
+      				  search: { show: true, position:"tr"},
+      				  pageToolbarHeight: 35,
+      				  defaultSortColClass: "id",
+      				  rowCount: { show: true, position: 'br'},
+      				  totalRecords: 6,
+				      };
+
+			   $.modernGrid(".secondTable", secondOptions);
+
+			});
+
+		</script>
+
+	</body>
+</html>

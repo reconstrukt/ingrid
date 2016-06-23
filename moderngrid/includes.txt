@@ -1,0 +1,14 @@
+Modern Grid Includes:
+
+I've included all required and extra plugins used in the examples in order to be complete.  For most examples, you will need PHP/MySQL (see ajaxExamples for sample PHP files).
+
+Included files:
+
+jQuery-3.0.0.js
+jQuery-3.0.0.min.js
+bootstrap.css
+bootstrap.js
+bootbox.js
+jquery.jeditable
+
+Note: currently, jeditable is required only if you wish to use edit in place functionality
