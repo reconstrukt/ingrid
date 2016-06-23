@@ -1,5 +1,11 @@
 modernGrid
 ======
 
-This is a complete re-write of ingrid, adding in lots of new functionality.  This is a robust re-write, with initial work completed in 2008, and continually used/maintained ever since.
+ Welcome to Modern Grid! Modern Grid is a jQuery data grid plugin, used to turn static tables into fully interactive tools. Modern Grid is a fork of ingrid (ingrid), re-written to provide more functionality. Some of the key differences:
+
+    Full JSON data support
+    Advanced interaction
+    Custom right click menu
+
+Modern Grid has been used in high volume production sites for over seven years - it is continually tweaked to ensure compatability with the lastest version of jQuery, and the latest frameworks.
 
