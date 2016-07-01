@@ -4,6 +4,36 @@ td, th {
     padding: 8px 0 !important;
 }
 
+table {
+	border-collapse: collapse;
+    border-spacing: 0;
+    color: #333;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.table {
+	margin-bottom: 0px !important;
+}
+
+.newData {
+    box-shadow: 3px 3px 4px 0px rgba(204,204,204,1);
+    height: 20px;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    width: 300px !important;
+    z-index: 10000;
+    padding-left: 5px;
+}
+
+.selectbox, .editbox {
+    position: absolute;
+    width: 300px !important;
+    z-index: 1000;
+}
+
 .rightClickMenu {
     display: none;
     z-index: 1000;
@@ -184,15 +214,17 @@ Paging Control Styles
 
 }
 .grid-infoBar-T {
-	background-color: #0064f0;
-color: #fff !important;
-	padding-top: 7px;	
+	background-color: #337ab7;
+	color: #fff !important;
+	padding-top: 7px;
+	border-radius: 5px 5px 0px 0px;	
 
 }
 .grid-infoBar-B {
-	background-color: #0064f0;
+	background-color: #337ab7;
 	padding-top: 7px;	
-color: #fff;
+	color: #fff;
+	border-radius: 0px 0px 5px 5px;	
 }
 
 /* paging control footer toolbar page form (pform) */

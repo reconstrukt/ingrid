@@ -120,6 +120,13 @@
         loadingClass: 'grid-loading',                   // loading loading mask div
         loadingHtml: '<div>&nbsp;</div>',               // default html for loading mask
 
+        /* Edit In Place */
+        editInPlace: false,                             // allows for ajax data editing in grid
+        editInPlaceEdit: 'edit',                        // edit in place normal edit class
+        editInPlaceSelect: 'select',                    // edit in place select class
+        editInPlaceError: function(jqXHR, textStatus, errorThrown){},   //function to deal with edit in place errors
+        editInPlaceSelectList: '',                      // list of value/text for select box, eg. {'Y':'Yes', 'N':'No'}
+
         /* should seldom change */
         resizeHandleHtml: '',                           // resize handle html + css
         resizeHandleClass: 'grid-col-resize',           // resize handle class
@@ -234,23 +241,7 @@
             dataType: cfg.dataType,
             success: function(result){
                 mainBuild(result, reload);
-				if (cfg.editInPlace) {
-					$('.edit').editable(cfg.updatePage, {
-						indicator : 'Saving...',
-						tooltip   : 'Click to edit...',
-						onblur: 'submit'
-					});
-					$('.date').editable(cfg.updatePage, {
-						indicator : 'Saving...',
-						tooltip   : 'Select Date...',
-						onblur: 'submit'
-					});
-				    $('.editYesList').editable(cfg.updatePage, {
-                        data   : " {'Y':'Yes','N':'No'}",
-                        type   : 'select',
-                        submit : 'OK'
-                    });
-				}
+
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 var loadingMask = $(cfg.target).find('.'+ cfg.loadingClass).fadeTo('fast', 0,  function () {
@@ -363,6 +354,11 @@
         if  (($(cfg.target).parent().width() !==0) && ($(cfg.target).parent().width()  <  cfg.width)  ||  ($(cfg.target).parent().width()  >  cfg.width))   {
             windowResize();
         }
+
+        if (cfg.editInPlace) {
+            editInPlace();
+        }
+
         cfg.initialLoad = ((cfg.tableType == 'hybrid') && (cfg.initialLoad == false)) ? true : cfg.initialLoad;
         $(cfg.target).find('.'+ cfg.loadingClass).fadeTo('slow', 0,  function () {
             $(this).remove();
@@ -1289,6 +1285,86 @@
     }
 
 /*********  START OF MISC FUNCTIONS (OVERLAY, RESIZE) **********/
+
+    function editInPlace() {
+
+        $('.'+cfg.editInPlaceEdit).on('click', function() {
+            var initialData = $(this).text();
+            var id = $(this).attr('id');
+            if ($(this).hasClass('editbox')) {
+
+            } else {
+                $(this).addClass('editbox').removeClass('edit');
+                var editbox = $('<input class="newData" value="'+initialData+'">');
+                $(this).html(editbox);
+                $(this).find('.newData').focus();
+                $('.newData').on('focusout', function() {
+                    var newData = $(this).val();
+                    var parent = $(this).parent();
+                    $.ajax({
+                      type: "POST",
+                      url: cfg.updatePage,
+                      data: {
+                        id: id,
+                        value: newData
+                      },
+                      success: function(msg) {
+                        parent.html(msg);
+                        parent.addClass('edit').removeClass('editbox');
+                      },
+                      error: function(jqXHR, textStatus, errorThrown) {
+                        editInPlaceError(jqXHR, textStatus, errorThrown);
+                      }
+                    });
+                });
+                $('.newData').keypress(function(e){
+                    if(e.which == 13){
+                        $(this).blur();    
+                    }
+                });
+            }
+        });
+
+        $('.'+cfg.editInPlaceSelect).click(function() {
+            var initialData = $(this).text();
+            var id = $(this).attr('id');
+            if ($(this).hasClass('selectbox')) {
+
+            } else {
+                $(this).addClass('selectbox').removeClass('select'); 
+                var selList = $('<select>').addClass('selList');
+                $.each(cfg.editInPlaceSelectList, function(index, value) {
+                    var opt = $('<option>').attr('val', index).text(value);
+                    if (value == $.trim(initialData)) {
+                        $(opt).attr('selected', 'selected');
+                    }
+                    $(selList).append(opt);
+                });
+                $(this).html(selList);
+
+                $('.selList').on('change', function() {
+                    var newData = $(this).val();
+                    var parent = $(this).parent();
+                    $.ajax({
+                      type: "POST",
+                      url: cfg.updatePage,
+                      data: {
+                        id: id,
+                        value: newData
+                      },
+                      success: function(msg) {
+                        parent.html(msg);
+                        parent.addClass('select').removeClass('selectbox');
+                      },
+                      error: function(jqXHR, textStatus, errorThrown) {
+                        editInPlaceError(jqXHR, textStatus, errorThrown);
+                      }
+                    });
+                });
+          }         
+        });
+
+    }
 		
     function createInfoBars(){
         cfg.infoBarT = $('<div>').addClass(cfg.infoBarTClass).css({
