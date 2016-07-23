@@ -1334,7 +1334,7 @@
                 $(this).addClass('selectbox').removeClass('select'); 
                 var selList = $('<select>').addClass('selList');
                 $.each(cfg.editInPlaceSelectList, function(index, value) {
-                    var opt = $('<option>').attr('val', index).text(value);
+                    var opt = $('<option>').attr('value', index).text(value);
                     if (value == $.trim(initialData)) {
                         $(opt).attr('selected', 'selected');
                     }
